@@ -42,3 +42,43 @@ export type AddShipsRequestData = {
   ships: Ship[];
   indexPlayer: string;
 };
+
+export type TurnResponseData = {
+    currentPlayer: string;
+};
+
+export type AttackRequestData = {
+    gameId: string;
+    x: number;
+    y: number;
+    indexPlayer: string;
+};
+
+export type AttackResponseData = {
+    position: { x: number; y: number };
+    currentPlayer: string;
+    status: 'miss' | 'killed' | 'shot';
+};
+
+export type RandomAttackRequestData = {
+    gameId: string;
+    indexPlayer: string;
+};
+
+export type FinishResponseData = {
+    winPlayer: string;
+};
+
+export type MissResult = {
+  x: number;
+  y: number;
+  status: "miss";
+};
+
+export type HitResult = {
+  x: number;
+  y: number;
+  status: "killed" | "shot";
+};
+
+export type Coord = {x: number, y: number}

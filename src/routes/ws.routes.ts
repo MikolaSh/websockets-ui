@@ -31,9 +31,15 @@ export class WSRouter {
           case 'add_user_to_room':
             this.roomController.handleAddUserToRoom(ws, message);
             break;
-            case 'add_ships':
-              this.gameController.handleAddShips(ws, message);
-              break;
+          case 'add_ships':
+            this.gameController.handleAddShips(ws, message);
+            break;
+          case 'attack':
+            this.gameController.handleAttack(ws, message);
+            break;
+          case 'randomAttack':
+            this.gameController.handleRandomAttack(ws, message);
+            break;
           default:
             ws.send(JSON.stringify({
               type: 'error',
