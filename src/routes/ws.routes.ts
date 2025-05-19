@@ -24,6 +24,7 @@ export class WSRouter {
             this.authController.handleLogin(ws, message);
             break;
           case 'create_room':
+            this.roomController.handleCreateRoom(ws);
             break;
           default:
             ws.send(JSON.stringify({
