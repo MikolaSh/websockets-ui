@@ -1,5 +1,6 @@
+import { WebSocket } from 'ws';
 import { Winner, WinnersUpdateResponse } from '../types/winners.ts';
-import { BaseView } from './base.view';
+import { BaseView } from './base.view.ts';
 
 export class WinnersView extends BaseView {
   sendWinnersUpdate(ws: WebSocket, winners: Array<Winner>) {

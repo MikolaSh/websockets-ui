@@ -13,4 +13,8 @@ export class UserRepository {
     this.users.push(newUser);
     return newUser;
   }
+
+  getAllUsers() {
+    return [...this.users];
+  }
 }

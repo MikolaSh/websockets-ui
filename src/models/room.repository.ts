@@ -1,6 +1,6 @@
-import { generateId } from "src/utils";
-import { Room } from "./room.model";
-import { User } from "./user.model";
+import { generateId } from "src/utils.ts";
+import { Room } from "./room.model.ts";
+import { User } from "./user.model.ts";
 import { WebSocket } from "ws";
 
 export class RoomRepository {
@@ -18,6 +18,10 @@ export class RoomRepository {
 
   getRoomById(id: string): Room | undefined{
     return this.rooms.get(id);
+  }
+
+  getAllRooms() {
+    return Array.from(this.rooms.values())
   }
 
 }

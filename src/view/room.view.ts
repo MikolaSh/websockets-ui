@@ -1,4 +1,4 @@
-import { Room } from "src/models/room.model";
+import { Room } from "src/models/room.model.ts";
 import { WebSocket } from "ws";
 import { BaseView } from "./base.view.ts";
 

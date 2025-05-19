@@ -1,3 +1,4 @@
+import { Winner } from "../types/winners.ts";
 import { User } from "../models/user.model.ts";
 import { UserRepository } from "../models/user.repository.ts";
 
@@ -18,5 +19,16 @@ export class AuthService {
     }
     
     return user;
+  }
+
+  getWinners(): Array<Winner> {
+    const users = this.userRepo.getAllUsers();
+
+    return users.map((user) => {
+      return {
+        name: user.name,
+        wins: user.wins,
+      }
+    })
   }
 }

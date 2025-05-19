@@ -1,9 +1,10 @@
-import { User } from 'src/models/user.model';
-import { LoginResponse } from 'src/types/login';
+import { User } from '../models/user.model.ts';
+import { LoginResponse } from '../types/login.ts';
 import { WebSocket } from 'ws';
+import { BaseView } from './base.view';
 
-export class AuthView {
-  static sendSuccess(ws: WebSocket, user: User) {
+export class AuthView extends BaseView{
+  sendSuccess(ws: WebSocket, user: User) {
     const response: LoginResponse = {
       type: 'reg',
       data: JSON.stringify({
@@ -17,7 +18,7 @@ export class AuthView {
     ws.send(JSON.stringify(response));
   }
 
-  static sendError(ws: WebSocket, error: Error) {
+  sendError(ws: WebSocket, error: Error) {
     const response: LoginResponse = {
       type: 'reg',
       data: {

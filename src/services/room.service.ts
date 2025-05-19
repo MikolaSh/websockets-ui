@@ -1,4 +1,4 @@
-import { Room } from "src/models/room.model";
+import { Room } from "../models/room.model.ts";
 import { RoomRepository } from "../models/room.repository.ts";
 import { User } from "../models/user.model.ts";
 import { WebSocket } from "ws";
@@ -21,5 +21,14 @@ export class RoomService {
 
     room.addPlayer(user, ws);
     return room;
+  }
+
+  getAvailableRooms(): Array<Room> {
+    const rooms = this.roomRepo.getAllRooms();
+    return rooms.map((room) => {
+      if(!room.players.length) {
+        return room;
+      }
+    }).filter((room) => room !== undefined)
   }
 }
