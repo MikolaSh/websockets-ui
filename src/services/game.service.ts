@@ -94,6 +94,8 @@ export class GameService {
       }),
       id: 0
     }));
+    
+    this.sendTurn(game);
   }
 
   handleAddShips(ws: WebSocket, playerId: string, ships: Array<Ship>) {
