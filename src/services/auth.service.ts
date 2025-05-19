@@ -3,7 +3,7 @@ import { User } from "../models/user.model.ts";
 import { UserRepository } from "../models/user.repository.ts";
 
 export class AuthService {
-  constructor(private userRepo = new UserRepository()) {}
+  constructor(private userRepo: UserRepository) {}
 
   async loginOrRegister(name: string, password: string): Promise<User> {
     if (!name || !password) {

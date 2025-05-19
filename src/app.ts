@@ -12,6 +12,7 @@ import { GameService } from './services/game.service.ts';
 import { GameController } from './controllers/game.controller.ts';
 import { GameView } from './view/game.view.ts';
 import { RoomRepository } from './models/room.repository.ts';
+import { UserRepository } from './models/user.repository.ts';
 
 export class App {
   private wss: WebSocketServer;
@@ -25,16 +26,20 @@ export class App {
   }
 
   private initializeDependencies() {
-    const authService = new AuthService();
-    const connectionService = new ConnectionService();
-    const gameService = new GameService();
-    const roomService = new RoomService(new RoomRepository(), gameService);
 
+    const userRepo = new UserRepository;
+
+    const authService = new AuthService(userRepo);
+    const connectionService = new ConnectionService();
+    
     
     const roomView = new RoomView(this.wss);
     const winnersView = new WinnersView(this.wss);
     const authView = new AuthView(this.wss);
     const gameView = new GameView();
+    
+    const gameService = new GameService(userRepo, winnersView);
+    const roomService = new RoomService(new RoomRepository(), gameService);
     
     const gameController = new GameController(gameService, gameView);
     const roomController = new RoomController(roomService, connectionService, gameService, roomView);

@@ -4,10 +4,17 @@ import { Game } from "../models/game.model.ts";
 import { generateId } from "../utils.ts";
 import { AttackRequestData, Coord, HitResult, MissResult, Ship } from "../types/game.ts";
 import { WSRequest } from "../types.ts";
+import { WinnersView } from "../view/winners.view.ts";
+import { UserRepository } from "../models/user.repository.ts";
 
 export class GameService {
   private games = new Map<string, Game>();
   private playerToGameMap = new Map<WebSocket, string>();
+
+  constructor(
+      private userRepo: UserRepository, 
+      private winnersView: WinnersView
+  ) {}
 
   createGame(room: Room): Game {
     const gameId = generateId();
@@ -208,7 +215,11 @@ export class GameService {
     return cells;
   }
 
-  finishGame(game: Game, winnerId: string) {
+  async finishGame(game: Game, winnerId: string) {
+    const winner = game.player1.playerId === winnerId ? game.player1 : game.player2;
+    
+    await this.userRepo.incrementWins(winner.userId);
+
     const response = {
       type: 'finish',
       data: JSON.stringify({ winPlayer: winnerId }),
@@ -218,6 +229,13 @@ export class GameService {
     game.player1.ws.send(JSON.stringify(response));
     game.player2.ws.send(JSON.stringify(response));
 
+    const winners = await this.userRepo.getWinners();
+    this.winnersView.broadcastWinnersUpdate(winners);
+
+    this.cleanupGame(game);
+  }
+
+  private cleanupGame(game: Game) {
     this.games.delete(game.id);
     this.playerToGameMap.delete(game.player1.ws);
     this.playerToGameMap.delete(game.player2.ws);
