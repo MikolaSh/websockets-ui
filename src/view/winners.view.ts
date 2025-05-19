@@ -16,7 +16,7 @@ export class WinnersView extends BaseView {
   private prepareWinnersUpdate(winners: Array<Winner>): WinnersUpdateResponse {
     return {
       type: 'update_winners',
-      data: winners,
+      data: JSON.stringify(winners),
       id: 0
     };
   }

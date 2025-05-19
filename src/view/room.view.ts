@@ -17,13 +17,13 @@ export class RoomView extends BaseView  {
   private prepareRoomUpdate(rooms: Array<Room>) {
     return {
       type: 'update_room',
-      data: rooms.map(room => ({
+      data: JSON.stringify(rooms.map(room => ({
         roomId: room.id,
         roomUsers: room.players.map(player => ({
           name: player.user.name,
           index: player.user.index
         }))
-      })),
+      }))),
       id: 0
     };
   }

@@ -41,10 +41,11 @@ export class AuthController {
       this.connectionService.registerConnection(user, ws);
       
       const avilableRooms = this.roomService.getAvailableRooms();
-      this.roomView.sendRoomUpdate(ws, avilableRooms);
+      // this.roomView.sendRoomUpdate(ws, avilableRooms);
+      this.roomView.broadcastRoomUpdate(avilableRooms);
 
       const winners = this.authService.getWinners();
-      this.winnersView.sendWinnersUpdate(ws, winners);
+      this.winnersView.broadcastWinnersUpdate(winners);
       
     } catch (error) {
       this.authView.sendError(ws, error as Error);
