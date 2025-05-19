@@ -1,4 +1,4 @@
-import { generateId } from "src/utils.ts";
+import { generateId } from "../utils.ts";
 import { Room } from "./room.model.ts";
 import { User } from "./user.model.ts";
 import { WebSocket } from "ws";

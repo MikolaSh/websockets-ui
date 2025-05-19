@@ -1,7 +1,7 @@
 import { User } from '../models/user.model.ts';
 import { LoginResponse } from '../types/login.ts';
 import { WebSocket } from 'ws';
-import { BaseView } from './base.view';
+import { BaseView } from './base.view.ts';
 
 export class AuthView extends BaseView{
   sendSuccess(ws: WebSocket, user: User) {
