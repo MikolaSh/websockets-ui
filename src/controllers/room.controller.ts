@@ -4,6 +4,9 @@ import { RoomService } from "../services/room.service.ts";
 import { RoomView } from "../view/room.view.ts";
 import { User } from "../models/user.model.ts";
 import { Room } from "../models/room.model.ts";
+import { AddPlayerRequetData } from "src/types/room.ts";
+import { WSRequest } from "src/types.ts";
+import { LoginRequestData } from "src/types/login.ts";
 
 export class RoomController {
   private connectionService: ConnectionService;
@@ -33,6 +36,23 @@ export class RoomController {
 
 
       this.roomView.sendRoomUpdate(ws, avilableRooms);
+
+    } catch(err) {
+      throw new Error('Some error appears');
+    }
+  }
+
+  handleAddUserToRoom(ws: WebSocket, { data }: WSRequest<AddPlayerRequetData>) {
+    
+    try {
+      const roomId = data.indexRoom;
+      const user = this.connectionService.getUserFromSocket(ws);
+
+      if(!user) return;
+
+      const room = this.roomService.joinRoom(roomId, user, ws);
+
+      this.roomView.broadcastRoomUpdate([room]);
 
     } catch(err) {
       throw new Error('Some error appears');

@@ -6,6 +6,7 @@ import { RoomView } from "../view/room.view.ts";
 import { WinnersView } from "src/view/winners.view.ts";
 import { WebSocket } from "ws";
 import { ConnectionService } from "src/services/connection.sercive.ts";
+import { LoginRequestData } from "src/types/login.ts";
 
 export class AuthController {
   private authService: AuthService;
@@ -31,7 +32,7 @@ export class AuthController {
     this.winnersView = winnersView
   }
 
-  async handleLogin(ws: WebSocket, message: WSRequest) {
+  async handleLogin(ws: WebSocket, message: WSRequest<LoginRequestData>) {
     try {
       const user = await this.authService.loginOrRegister(
         message.data.name,

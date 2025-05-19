@@ -18,6 +18,8 @@ export class WSRouter {
           : Buffer.from(rawMessage as ArrayBuffer).toString('utf-8');
         
         const message = deepParseJson<WSRequest>(messageString);
+
+        console.log(message);
         
         switch (message.type) {
           case 'reg':
@@ -25,6 +27,9 @@ export class WSRouter {
             break;
           case 'create_room':
             this.roomController.handleCreateRoom(ws);
+            break;
+          case 'add_user_to_room':
+            this.roomController.handleAddUserToRoom(ws, message);
             break;
           default:
             ws.send(JSON.stringify({

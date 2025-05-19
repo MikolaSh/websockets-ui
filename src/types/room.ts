@@ -5,3 +5,7 @@ export type PlayerInRoom = {
   user: User;
   ws: WebSocket; 
 }
+
+export type AddPlayerRequetData = {
+  indexRoom: string;
+}

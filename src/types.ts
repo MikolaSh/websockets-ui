@@ -1,4 +1,5 @@
-import { LoginRequestData } from "./types/login";
+import { LoginRequestData } from "./types/login.ts";
+import { AddPlayerRequetData } from "./types/room.ts";
 
 type WSRequestType = "reg"
   | "update_winners"
@@ -13,8 +14,8 @@ type WSRequestType = "reg"
   | "turn" 
   | "finish" 
 
-export type WSRequest = {
+export type WSRequest<T = any> = {
   type: WSRequestType;
-  data: any | LoginRequestData;
+  data: T;
   id: 0;
 }
