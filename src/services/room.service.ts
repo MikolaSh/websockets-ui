@@ -32,6 +32,7 @@ export class RoomService {
     if (room.players.length === 2) {
       const game = this.gameService.createGame(room);
       this.gameService.sendCreateGameNotifications(game);
+      this.roomRepo.deleteRoom(room.id);
     }
 
     return room;

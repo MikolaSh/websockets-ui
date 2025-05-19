@@ -24,4 +24,7 @@ export class RoomRepository {
     return Array.from(this.rooms.values())
   }
 
+  deleteRoom(id: string): void {
+    this.rooms.delete(id);
+  }
 }

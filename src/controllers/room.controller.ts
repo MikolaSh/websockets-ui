@@ -59,7 +59,9 @@ export class RoomController {
 
       const room = this.roomService.joinRoom(roomId, user, ws);
 
-      this.roomView.broadcastRoomUpdate([room]);
+      const avilableRooms = this.roomService.getAvailableRooms();
+
+      this.roomView.broadcastRoomUpdate(avilableRooms);
 
     } catch(err) {
       throw new Error('Some error appears');
