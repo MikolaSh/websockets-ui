@@ -1,3 +1,5 @@
+import { randomUUID } from "crypto";
+
 export function deepParseJson<T = unknown>(input: string | T): T {
   if (typeof input === 'string') {
     try {
@@ -21,4 +23,8 @@ export function deepParseJson<T = unknown>(input: string | T): T {
   }
 
   return input as T;
+}
+
+export const generateId = () => {
+  return randomUUID()
 }
