@@ -3,11 +3,13 @@ import { AuthController } from '../controllers/auth.controller.ts';
 import { RoomController } from '../controllers/room.controller.ts';
 import { deepParseJson } from '../utils.ts';
 import { WSRequest } from '../types.ts';
+import { GameController } from 'src/controllers/game.controller.ts';
 
 export class WSRouter {
   constructor(
     private authController: AuthController,
-    private roomController: RoomController
+    private roomController: RoomController,
+    private gameController: GameController
   ) {}
 
   setupRoutes(ws: WebSocket) {
@@ -19,8 +21,6 @@ export class WSRouter {
         
         const message = deepParseJson<WSRequest>(messageString);
 
-        console.log(message);
-        
         switch (message.type) {
           case 'reg':
             this.authController.handleLogin(ws, message);
@@ -31,6 +31,9 @@ export class WSRouter {
           case 'add_user_to_room':
             this.roomController.handleAddUserToRoom(ws, message);
             break;
+            case 'add_ships':
+              this.gameController.handleAddShips(ws, message);
+              break;
           default:
             ws.send(JSON.stringify({
               type: 'error',

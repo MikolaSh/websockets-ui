@@ -6,16 +6,23 @@ import { User } from "../models/user.model.ts";
 import { Room } from "../models/room.model.ts";
 import { AddPlayerRequetData } from "src/types/room.ts";
 import { WSRequest } from "src/types.ts";
-import { LoginRequestData } from "src/types/login.ts";
+import { GameService } from "src/services/game.service.ts";
 
 export class RoomController {
   private connectionService: ConnectionService;
+  private gameService: GameService;
   private roomService: RoomService;
   private roomView: RoomView;
 
-  constructor(roomService: RoomService, connectionService: ConnectionService, roomView: RoomView) {
+  constructor(
+    roomService: RoomService, 
+    connectionService: ConnectionService, 
+    gameService: GameService, 
+    roomView: RoomView
+  ) {
     this.roomService = roomService;
     this.connectionService = connectionService;
+    this.gameService = gameService;
     this.roomView = roomView;
   }
 
@@ -35,7 +42,7 @@ export class RoomController {
       const avilableRooms = this.roomService.getAvailableRooms();
 
 
-      this.roomView.sendRoomUpdate(ws, avilableRooms);
+      this.roomView.broadcastRoomUpdate(avilableRooms);
 
     } catch(err) {
       throw new Error('Some error appears');
