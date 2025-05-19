@@ -1,7 +1,8 @@
+import { WebSocket } from "ws";
 import { Room } from "../models/room.model.ts";
 import { Game } from "../models/game.model.ts";
-import { WebSocket } from "ws";
 import { generateId } from "../utils.ts";
+import { Ship } from "../types/game.ts";
 
 export class GameService {
   private games = new Map<string, Game>();
@@ -34,7 +35,6 @@ export class GameService {
   }
 
   sendCreateGameNotifications(game: Game) {
-    // Отправляем первому игроку
     game.player1.ws.send(JSON.stringify({
       type: "create_game",
       data: JSON.stringify({
@@ -44,7 +44,6 @@ export class GameService {
       id: 0
     }));
 
-    // Отправляем второму игроку
     game.player2.ws.send(JSON.stringify({
       type: "create_game",
       data: JSON.stringify({
@@ -58,6 +57,51 @@ export class GameService {
   getGameByPlayerWs(ws: WebSocket): Game | undefined {
     const gameId = this.playerToGameMap.get(ws);
     return gameId ? this.games.get(gameId) : undefined;
+  }
+
+  private startGame(game: Game) {
+    game.status = 'started';
+    
+    const firstPlayerId = Math.random() > 0.5 
+      ? game.player1.playerId 
+      : game.player2.playerId;
+
+    game.player1.ws.send(JSON.stringify({
+      type: 'start_game',
+      data: {
+        ships: game.player1.ships!,
+        currentPlayerIndex: firstPlayerId
+      },
+      id: 0
+    }));
+
+    game.player2.ws.send(JSON.stringify({
+      type: 'start_game',
+      data: {
+        ships: game.player2.ships!,
+        currentPlayerIndex: firstPlayerId
+      },
+      id: 0
+    }));
+  }
+
+  handleAddShips(ws: WebSocket, playerId: string, ships: Array<Ship>) {
+    const game = this.getGameByPlayerWs(ws);
+    if (!game) throw new Error('Game not found');
+
+    const player = game.player1.playerId === playerId 
+      ? game.player1 
+      : game.player2.playerId === playerId 
+        ? game.player2 
+        : null;
+
+    if (!player) throw new Error('Player not found in this game');
+
+    player.ships = ships;
+
+    if (game.areBothPlayersReady()) {
+      this.startGame(game);
+    }
   }
 
 }

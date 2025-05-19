@@ -3,8 +3,16 @@ import { WebSocket } from "ws";
 export type CreateGameResponse = {
   type: 'create_game';
   data: {
-    idGame: string | number;
-    idPlayer: string | number; // Уникальный ID игрока в этой сессии
+    idGame: string;
+    idPlayer: string;
+  };
+  id: 0;
+};
+export type StartGameResponse = {
+  type: 'start_game';
+  data: {
+    ships: Array<Ship>;
+    currentPlayerIndex: string; 
   };
   id: 0;
 };

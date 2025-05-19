@@ -1,3 +1,4 @@
+import { Ship } from '../types/game.ts';
 import { WebSocket } from 'ws';
 
 export class GameView {
@@ -8,6 +9,19 @@ export class GameView {
       id: 0
     }));
   }
+
+  sendStartGame(
+    ws: WebSocket, 
+    ships: Array<Ship>, 
+    currentPlayerIndex: string
+  ) {
+    ws.send(JSON.stringify({
+      type: 'start_game',
+      data: { ships, currentPlayerIndex },
+      id: 0
+    }));
+  }
+
 
   sendError(ws: WebSocket, errorText: string) {
     ws.send(JSON.stringify({

@@ -13,28 +13,16 @@ export class GameController {
 
   handleAddShips(ws: WebSocket, message: WSRequest<AddShipsRequestData>) {
     try {
-      const game = this.gameService.getGameByPlayerWs(ws);
-      if (!game) throw new Error('Game not found');
-
-      const player = game.getPlayerById(message.data.indexPlayer);
-      if (!player) throw new Error('Player not found in this game');
-
-      // Сохраняем корабли
-      player.ships = message.data.ships;
-
-      // Проверяем готовность обоих игроков
-      if (game.player1.ships && game.player2.ships) {
-        game.status = 'ready';
-        this.startGame(game);
+      const { gameId, ships, indexPlayer } = message.data;
+      
+      if (!ships || ships.length === 0) {
+        throw new Error('No ships provided');
       }
+
+      this.gameService.handleAddShips(ws, indexPlayer, ships);
 
     } catch (error) {
       this.gameView.sendError(ws, error instanceof Error ? error.message : 'Invalid ships data');
     }
-  }
-
-  private startGame(game: Game) {
-    game.status = 'started';
-    // Логика начала игры (отправка turn и т.д.)
   }
 }

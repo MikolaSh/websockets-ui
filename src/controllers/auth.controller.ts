@@ -42,7 +42,6 @@ export class AuthController {
       this.connectionService.registerConnection(user, ws);
       
       const avilableRooms = this.roomService.getAvailableRooms();
-      // this.roomView.sendRoomUpdate(ws, avilableRooms);
       this.roomView.broadcastRoomUpdate(avilableRooms);
 
       const winners = this.authService.getWinners();

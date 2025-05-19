@@ -8,6 +8,10 @@ export class Game {
     public status: 'waiting_ships' | 'ready' | 'started' = 'waiting_ships'
   ) {}
 
+  areBothPlayersReady(): boolean {
+    return !!this.player1.ships && !!this.player2.ships;
+  }
+
   getPlayerById(playerId: string) {
     return this.player1.playerId === playerId ? this.player1 : 
            this.player2.playerId === playerId ? this.player2 : null;
